@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Siperb Web Phone – Test Index</title>
+  <style>
+    html, body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; padding: 0; }
+    header { padding: 24px; background: #0b1220; color: #fff; }
+    header h1 { margin: 0 0 8px; font-size: 22px; }
+    main { padding: 24px; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: 16px; }
+    .card { border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; }
+    .card h2 { margin: 0 0 6px; font-size: 18px; }
+    .card p { margin: 0 0 12px; color: #374151; font-size: 14px; }
+    .card a { display: inline-block; padding: 8px 12px; border-radius: 8px; background: #2563eb; color: #fff; text-decoration: none; }
+    footer { padding: 16px 24px; color: #6b7280; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Siperb Web Phone – Test Index</h1>
+    <div>Quick links to the demo pages served at http://127.0.0.1:7777/</div>
+  </header>
+  <main>
+    <div class="cards">
+      <div class="card">
+        <h2>SIP.js (module)
+        </h2>
+        <p>Module-based SIP.js example using provisioned credentials.</p>
+        <a href="./test-SIPJS.html">Open test-SIPJS.html</a>
+      </div>
+      <div class="card">
+        <h2>JsSIP (browser)
+        </h2>
+        <p>Browser-friendly JsSIP demo (use CDN global window.JsSIP or local install).</p>
+        <a href="./test-JSSIP.html">Open test-JSSIP.html</a>
+      </div>
+      <div class="card">
+        <h2>Browser Phone (UI)</h2>
+        <p>Minimal browser phone UI wired to Siperb provisioning.</p>
+        <a href="./test-Browser-Phone.html">Open test-Browser-Phone.html</a>
+      </div>
+    </div>
+  </main>
+  <footer>Port 7777 • Cache disabled • Served by npm scripts</footer>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Browser Phone Test</title>
+    <!-- Siperb Provisioning UMD build -->
+    <script src="./dist/Siperb-Provisioning.umd.min.js"></script>
+    <!-- Include your test script -->
+    <script>
+        async function main() {
+            const accessToken = '<YOUR_PERSONAL_ACCESS_TOKEN>';
+            let session;
+            try {
+                session = await window.Siperb.Login(accessToken);
+            } catch (error) {
+                console.error('Failed to get session:', error);
+                return;
+            }
+
+            // Assume you have a known DeviceToken or use GetDevices as in test.js
+            // See admin control Panel for generating Script Devices (to get DeviceToken)
+            const deviceToken = "<YOUR_DEVICE_TOKEN>";
+            const provisioning = await window.Siperb.GetProvisioning({
+                UserId: session.UserId,
+                DeviceToken: deviceToken,
+                SessionToken: session.SessionToken,
+                EnableCache: true,
+                ProvisioningKey: 'SiperbProvisioning'
+            });
+
+            // Note: you must load Browser Phone into an IFRAME in the DOM for it to work properly.
+            // You can use whatever method you like to handle the IFRAME, or whatever library to manage it.
+            // You would typically just set its src to "about:blank", the script will take care of the rest.
+            // The smallest size that the Frame UI supports is 320x320 pixels, but typically you would want
+            // something like 400x600 or larger - its can also be full screen if you want.
+            // There are very many media queries and custom size handlers, so never attempt to load the phone
+            // UI into a DIV within your own page. It must be in its own IFRAME to work properly.
+            // All the scripts used by the phone are loaded at runtime, and are sourced from the Siperb CDN.
+            // If you or your users are behind a restrictive firewall, you may need to whitelist the Siperb CDN.
+            // This module does not work offline - for that you should look at the Desktop Phone version instead.
+            const thePhoneFrame = document.getElementById('phoneFrame');
+            // There are two steps, first we load the HTML, CSS, and JS for Browser Phone,
+            // Then we provision and display the phone UI.
+
+            // Load the Browser Phone into the IFRAME
+            // Note: This promise can reject if the phone fails to load.
+            await window.Siperb.LoadBrowserPhone(thePhoneFrame);
+
+            // Provision the phone
+            // Note: This function will automatically setup and configure the phone, with the 
+            // necessary SIP account details from provisioning.
+            // It is not however mandatory to use this function, you can also manually
+            // configure the phone if you prefer to do so.
+            const phoneAPI = await window.Siperb.ProvisionPhone({
+                Provisioning : provisioning,
+                PhoneFrame : thePhoneFrame,
+                ProfileUserId : deviceToken,
+                SessionId : session.SessionToken,
+                UserId : session.UserId,
+                // Optional Settings
+                EnableAvatar : true,                    // Show user avatar/profile picture
+                EnabledSettings : false,                // Show settings button
+                EnableDialPad : false,                  // Show dial pad button
+                EnableDisplayCallDetailRecords : true,  // Show call detail records button
+                EnableCallTransfer : true,              // Enable call transfer feature 
+                EnableCallHold : true,                  // Enable call hold feature
+                EnableCallMute : true,                  // Enable call mute feature
+                EnableCallRecording : true,             // Enable call recording feature
+                // Settings normally in settings window
+                EnableAutoAnswer : false,               // Auto answer incoming calls
+                EnableDoNotDisturb : false,             // Do not disturb mode
+                EnableCallWaiting : false,              // Call waiting feature
+                Language : 'auto',                      // e.g. 'en-US', 'fr-FR', 'de-DE', 'es-ES', etc.
+                DisplayDateFormat : 'MMM DD, YYYY',     // Moment JS date format
+                DisplayTimeFormat : 'hh:mm A',          // Moment JS date time format
+                UiThemeStyle : 'light',                 // 'light', 'dark', or 'system'
+                // Optional: Callback when the phone UI has loaded and is ready
+                OnLoad : function(){
+                    phoneAPI.Toast("Browser Phone UI has loaded and is ready.");
+                }
+            });
+
+            // Non-mandatory: Setup tool tips for the phone UI
+            // Apply the tool tips
+            phoneAPI.InitTooltips();
+
+            // Non-mandatory UI Callbacks
+            // ==========================
+            phoneAPI.OnOffline = function () {
+                // Your code here
+            }
+            phoneAPI.OnOnline = function () {
+                // Your code here
+            }
+            phoneAPI.OnProfilePicture = function () {
+                // Your code here
+            }
+            phoneAPI.OnProfileText = function () {
+                // Your code here
+            }
+
+            // Done
+            console.log('✅ Browser Phone provisioned and running.');
+
+            // Wire up sample button
+            document.getElementById('sample_dial').addEventListener('click', () => {
+                // You need to make sure to are on the 'window.phone' namespace in the IFRAME
+                const phone = (thePhoneFrame.contentWindow && thePhoneFrame.contentWindow.phone) ? thePhoneFrame.contentWindow.phone : null;
+                if (!phone) {
+                    console.error('Phone API not available in IFRAME.');
+                    return;
+                }
+                // console.log('Phone API:', phone);
+
+                // Now you have access to the phone API
+                const numberToDial = '*65';
+                phone.Dial(numberToDial, false, 'sip');
+            });
+        }
+        window.addEventListener('load', async () => {
+            await main();
+            console.log('🎉 Browser Phone Test Completed.');
+        });
+
+    </script>
+</head>
+
+<body>
+    <h1>Browser Phone Test</h1>
+    <p>Open the console to see Browser Phone logs and provisioning output.</p>
+
+    <div>
+        Click to Dial sample: <button id="sample_dial">Dial *65</button>
+    </div>
+    <br>
+
+    <iframe id="phoneFrame" src="about:blank" style="width:400px; height:640px; border:1px solid black; border-radius: 5px;"></iframe>
+</body>
+
+</html>
