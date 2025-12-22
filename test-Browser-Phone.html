@@ -4,7 +4,7 @@
 <head>
     <title>Browser Phone Test</title>
     <!-- Siperb Provisioning UMD build -->
-    <script src="./dist/Siperb-Provisioning.umd.min.js"></script>
+    <script src="./dist/Siperb-Web-Phone.umd.min.js"></script>
     <!-- Include your test script -->
     <script>
         async function main() {
@@ -60,12 +60,13 @@
                 // Optional Settings
                 EnableAvatar : true,                    // Show user avatar/profile picture
                 EnabledSettings : false,                // Show settings button
-                EnableDialPad : false,                  // Show dial pad button
+                EnableDialPad : true,                   // Show dial pad button
                 EnableDisplayCallDetailRecords : true,  // Show call detail records button
                 EnableCallTransfer : true,              // Enable call transfer feature 
                 EnableCallHold : true,                  // Enable call hold feature
                 EnableCallMute : true,                  // Enable call mute feature
                 EnableCallRecording : true,             // Enable call recording feature
+                EnableDeviceSelector : true,            // Enable media device selection
                 // Settings normally in settings window
                 EnableAutoAnswer : false,               // Auto answer incoming calls
                 EnableDoNotDisturb : false,             // Do not disturb mode

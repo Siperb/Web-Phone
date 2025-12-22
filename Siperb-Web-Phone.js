@@ -167,7 +167,7 @@ const Siperb = {
                                 // Resolve but don't return.
                                 resolve(cachedProvisioning);
                                 isResolved = true;
-                                console.log(`GetProvisioning: %cUsing cached Provisioning`,  "color: green;");
+                                console.log(`GetProvisioning: %cUsing cached Provisioning`,  "color: orange;");
                             }
                             catch (error) {
                                 console.log(`GetProvisioning: %cError parsing cached Provisioning: ${error.message}`, "color: red;");
@@ -254,7 +254,15 @@ const Siperb = {
             const PhoneWindow = iframeElement.contentWindow;
             const phoneDoc = PhoneWindow.document;
             // Load the Browser Phone Layer
-            let phoneVersionTree = await Siperb.LoadVersionTree("https://y3amulnpc5icrmmnmvtfn44zba0ckjuq.lambda-url.eu-west-1.on.aws/", "BROWSER_PHONE_VERSION_TREE");
+            let treeUrl = "https://y3amulnpc5icrmmnmvtfn44zba0ckjuq.lambda-url.eu-west-1.on.aws/";
+            if(typeof window !== 'undefined' && typeof window.localStorage !== "undefined"){
+                if(localStorage.getItem("DEV_MODE") == "yes"){
+                    window.SiperbAPI.DevMode = true;
+                    treeUrl = "https://vgf6bcf26w6wime5enpyflps640yhqmb.lambda-url.eu-west-1.on.aws/";
+                    console.log("LoadBrowserPhone: %cDEV_MODE enabled, using local version tree", "color: green; font-weight: bold;");
+                }
+            }
+            let phoneVersionTree = await Siperb.LoadVersionTree(treeUrl, "BROWSER_PHONE_VERSION_TREE");
             if (!phoneVersionTree) {
                 console.log(`LoadBrowserPhone: %cPhone Version tree could not be loaded`, "color: red;");
                 return reject("Phone Version tree could not be loaded");
@@ -291,7 +299,7 @@ const Siperb = {
             // Check if the version tree is already in localStorage
             let isResolved = false;
             let versionTree = localStorage.getItem(cacheKey);
-            if (versionTree) {
+            if (versionTree && window.SiperbAPI.DevMode !== true) {
                 // Parse the JSON string to an object
                 versionTree = JSON.parse(versionTree);
                 // Resolve the Promise but don't return the function
@@ -309,6 +317,7 @@ const Siperb = {
                         versionTree = await response.json();
                         // Save the json data to the localStorage
                         localStorage.setItem(cacheKey, JSON.stringify(versionTree));
+                        console.log(`LoadVersionTree - ${cacheKey}: %cTree loaded from network`, "color: green;");
                         if (!isResolved) resolve(versionTree);
                     }
                     else {
