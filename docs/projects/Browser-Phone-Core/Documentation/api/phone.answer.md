@@ -1,6 +1,6 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Core](../../../../README.md#browser-phone-core)
 
-## phone.Answer() method
+## phone.Answer() function
 
 Answers an incoming call. Works with or without await.
 
@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-Answer(param: string | SessionObject | BuddyObject): Promise<SessionObject | undefined>;
+phone.Answer(param: string | SessionObject | BuddyObject): Promise<SessionObject | undefined>;
 ```
 
 ## Parameters

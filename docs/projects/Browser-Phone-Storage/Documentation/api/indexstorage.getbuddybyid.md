@@ -1,15 +1,15 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Storage](../../../../README.md#browser-phone-storage)
 
-## IndexStorage.GetBuddyById() method
+## phone.IndexStorage.GetBuddyById() method
 
-Fetch a single `MyBuddies` record by its id. Keyed get — no scan.
+Fetch a single `MyBuddies` record by its id. Keyed get — no scan. Reachable on the Phone API as `phone.IndexStorage.GetBuddyById` (the instance is installed on `window.phone.IndexStorage` by [HookupCallbacks()](./indexstorage.hookupcallbacks.md)).
 
 Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_API.md).
 
 <b>Signature:</b>
 
 ```typescript
-GetBuddyById(id: string): Promise<any | null>;
+phone.IndexStorage.GetBuddyById(id: string): Promise<any | null>;
 ```
 
 ## Parameters

@@ -1,6 +1,6 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Core](../../../../README.md#browser-phone-core)
 
-## phone.BlindTransfer() method
+## phone.BlindTransfer() function
 
 Immediately transfers a call to the given destination.
 
@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-BlindTransfer(param: string | SessionObject | BuddyObject, destination: string | BuddyObject): Promise<void>;
+phone.BlindTransfer(param: string | SessionObject | BuddyObject, destination: string | BuddyObject): Promise<void>;
 ```
 
 ## Parameters

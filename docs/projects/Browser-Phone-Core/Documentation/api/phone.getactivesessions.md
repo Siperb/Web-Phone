@@ -1,6 +1,6 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Core](../../../../README.md#browser-phone-core)
 
-## phone.GetActiveSessions() method
+## phone.GetActiveSessions() function
 
 Returns all active sessions across every buddy.
 
@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-GetActiveSessions(): SessionObject[];
+phone.GetActiveSessions(): SessionObject[];
 ```
 
 <b>Returns:</b>

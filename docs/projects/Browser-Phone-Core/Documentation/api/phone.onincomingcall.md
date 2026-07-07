@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-OnIncomingCall: ((calldetails: { SessionId: string; Time: string; BuddyId: string; CallerId: string; DID: string; Direction: string; WithVideo: boolean }) => void) | null;
+phone.OnIncomingCall: ((calldetails: { SessionId: string; Time: string; BuddyId: string; CallerId: string; DID: string; Direction: string; WithVideo: boolean }) => void) | null;
 ```
 
 ## Parameters

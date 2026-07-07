@@ -1,6 +1,6 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Core](../../../../README.md#browser-phone-core)
 
-## phone.LoadMessage() method
+## phone.LoadMessage() function
 
 Load a message from the message stream.
 
@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-LoadMessage(messageId: string): Promise<MessageStreamItem | null>;
+phone.LoadMessage(messageId: string): Promise<MessageStreamItem | null>;
 ```
 
 ## Parameters

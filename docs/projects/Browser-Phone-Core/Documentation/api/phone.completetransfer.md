@@ -1,6 +1,6 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Core](../../../../README.md#browser-phone-core)
 
-## phone.CompleteTransfer() method
+## phone.CompleteTransfer() function
 
 Completes a pending attended transfer, connecting the original caller to the destination.
 
@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-CompleteTransfer(childSessionId: string): Promise<void>;
+phone.CompleteTransfer(childSessionId: string): Promise<void>;
 ```
 
 ## Parameters

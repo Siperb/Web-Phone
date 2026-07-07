@@ -1,6 +1,6 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Core](../../../../README.md#browser-phone-core)
 
-## phone.UpdateBuddy() method
+## phone.UpdateBuddy() function
 
 Updates an existing buddy and refreshes the UI after a short delay.
 
@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-UpdateBuddy(buddy: BuddyObject): Promise<void>;
+phone.UpdateBuddy(buddy: BuddyObject): Promise<void>;
 ```
 
 ## Parameters

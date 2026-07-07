@@ -1,6 +1,6 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Core](../../../../README.md#browser-phone-core)
 
-## phone.SaveRecording() method
+## phone.SaveRecording() function
 
 Saves a call recording to persistent storage.
 
@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-SaveRecording(recording: RecordingObject): Promise<void>;
+phone.SaveRecording(recording: RecordingObject): Promise<void>;
 ```
 
 ## Parameters

@@ -1,6 +1,6 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Core](../../../../README.md#browser-phone-core)
 
-## phone.DeleteBuddy() method
+## phone.DeleteBuddy() function
 
 Deletes a buddy from the PhoneAPI buddy list and triggers related callbacks.
 
@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-DeleteBuddy(buddy: BuddyObject): Promise<void>;
+phone.DeleteBuddy(buddy: BuddyObject): Promise<void>;
 ```
 
 ## Parameters

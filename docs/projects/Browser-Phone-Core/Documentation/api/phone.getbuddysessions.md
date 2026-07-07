@@ -1,6 +1,6 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Core](../../../../README.md#browser-phone-core)
 
-## phone.GetBuddySessions() method
+## phone.GetBuddySessions() function
 
 Returns the sessions belonging to a buddy.
 
@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-GetBuddySessions(buddyId: string | BuddyObject): [] | any[];
+phone.GetBuddySessions(buddyId: string | BuddyObject): [] | any[];
 ```
 
 ## Parameters

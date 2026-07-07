@@ -1,6 +1,6 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Core](../../../../README.md#browser-phone-core)
 
-## phone.AttendedTransfer() method
+## phone.AttendedTransfer() function
 
 Initiates a consultative (attended) transfer: places the current call on hold and dials the destination.
 
@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-AttendedTransfer(param: string | SessionObject | BuddyObject, destination: string | BuddyObject): Promise<{ session: SessionObject; childSessionId: string } | undefined>;
+phone.AttendedTransfer(param: string | SessionObject | BuddyObject, destination: string | BuddyObject): Promise<{ session: SessionObject; childSessionId: string } | undefined>;
 ```
 
 ## Parameters

@@ -1,6 +1,6 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Core](../../../../README.md#browser-phone-core)
 
-## phone.FlagMessage() method
+## phone.FlagMessage() function
 
 Flag a message.
 
@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-FlagMessage(messageId: string): Promise<void>;
+phone.FlagMessage(messageId: string): Promise<void>;
 ```
 
 ## Parameters

@@ -9,19 +9,23 @@ exposed symbols and the documents that describe them. Copied reference pages liv
 `projects/<Project>/`. Each project lists the symbols it exposes, then a table of documents —
 click a document for its full reference page.
 
+## Provisioning
+
+[Provisioning settings reference](./Provisioning.md) — Reference for every runtime <code>phone.Settings.*</code> value applied during phone provisioning.
+
 ## Browser-Phone-Storage
 
 **Exposed:** <code>phone.SaveToStorage</code>, <code>phone.LoadFromStorage</code>, <code>phone.IndexStorage.GetBuddyById</code>
 
 |  Document | Description |
 |  --- | --- |
-|  [phone.SaveToStorage()](./projects/Browser-Phone-Storage/Documentation/api/browserphonestorage.save.md) | Write <code>data</code> to <code>window.localStorage</code> under <code>key</code>. |
+|  [phone.SaveToStorage()](./projects/Browser-Phone-Storage/Documentation/api/browserphonestorage.save.md) | Save <code>data</code> to <code>window.localStorage</code> under <code>key</code>. |
 |  [phone.LoadFromStorage()](./projects/Browser-Phone-Storage/Documentation/api/browserphonestorage.get.md) | Read the raw string stored at <code>key</code>. |
-|  [phone.IndexStorage.GetBuddyById()](./projects/Browser-Phone-Storage/Documentation/api/indexstorage.getbuddybyid.md) | Fetch a single <code>MyBuddies</code> record by its id. Keyed get — no scan. |
+|  [phone.IndexStorage.GetBuddyById()](./projects/Browser-Phone-Storage/Documentation/api/indexstorage.getbuddybyid.md) | Fetch a single <code>MyBuddies</code> record by its id. |
 
 ## Browser-Phone-Core
 
-**Exposed:** <code>InitPhoneAPI</code>, <code>phone.Dial</code>, <code>phone.EndCall</code>, <code>phone.Answer</code>, <code>phone.Decline</code>, <code>phone.Hold</code>, <code>phone.Unhold</code>, <code>phone.Mute</code>, <code>phone.Unmute</code>, <code>phone.BlindTransfer</code>, <code>phone.AttendedTransfer</code>, <code>phone.CompleteTransfer</code>, <code>phone.CancelTransfer</code>, <code>phone.SendDtmf</code>, <code>phone.AddBuddy</code>, <code>phone.DeleteBuddy</code>, <code>phone.UpdateBuddy</code>, <code>phone.SaveRecording</code>, <code>phone.GetRecording</code>, <code>phone.PlayRecording</code>, <code>phone.LoadMessage</code>, <code>phone.FlagMessage</code>, <code>phone.GetActiveSessions</code>, <code>phone.GetSessions</code>, <code>phone.GetBuddySessions</code>, <code>phone.OnSessionChange</code>, <code>phone.OnIncomingCall</code>
+**Exposed:** <code>InitPhoneAPI</code>, <code>phone.Dial</code>, <code>phone.EndCall</code>, <code>phone.Answer</code>, <code>phone.Decline</code>, <code>phone.Hold</code>, <code>phone.Unhold</code>, <code>phone.Mute</code>, <code>phone.Unmute</code>, <code>phone.BlindTransfer</code>, <code>phone.AttendedTransfer</code>, <code>phone.CompleteTransfer</code>, <code>phone.CancelTransfer</code>, <code>phone.SendDtmf</code>, <code>phone.AddBuddy</code>, <code>phone.DeleteBuddy</code>, <code>phone.UpdateBuddy</code>, <code>phone.SaveRecording</code>, <code>phone.GetRecording</code>, <code>phone.PlayRecording</code>, <code>phone.SaveBuddy</code>, <code>phone.AddMessage</code>, <code>phone.SaveMessage</code>, <code>phone.LoadMessage</code>, <code>phone.LoadBuddyMessages</code>, <code>phone.FlagMessage</code>, <code>phone.GetSession</code>, <code>phone.GetActiveSessions</code>, <code>phone.GetSessions</code>, <code>phone.GetBuddySessions</code>, <code>phone.OnSessionChange</code>, <code>phone.OnIncomingCall</code>
 
 |  Document | Description |
 |  --- | --- |
@@ -45,8 +49,13 @@ click a document for its full reference page.
 |  [phone.SaveRecording()](./projects/Browser-Phone-Core/Documentation/api/phone.saverecording.md) | Saves a call recording to persistent storage. |
 |  [phone.GetRecording()](./projects/Browser-Phone-Core/Documentation/api/phone.getrecording.md) | Retrieves a previously saved recording by its ID. |
 |  [phone.PlayRecording()](./projects/Browser-Phone-Core/Documentation/api/phone.playrecording.md) | Plays a saved recording by object or ID, handling DOM and cleanup. |
+|  [phone.SaveBuddy()](./projects/Browser-Phone-Core/Documentation/api/phone.savebuddy.md) | Save a buddy to the storage. |
+|  [phone.AddMessage()](./projects/Browser-Phone-Core/Documentation/api/phone.addmessage.md) | Add a message to the message stream. |
+|  [phone.SaveMessage()](./projects/Browser-Phone-Core/Documentation/api/phone.savemessage.md) | Save a message to the message stream. |
 |  [phone.LoadMessage()](./projects/Browser-Phone-Core/Documentation/api/phone.loadmessage.md) | Load a message from the message stream. |
+|  [phone.LoadBuddyMessages()](./projects/Browser-Phone-Core/Documentation/api/phone.loadbuddymessages.md) | Load the messages for a buddy. |
 |  [phone.FlagMessage()](./projects/Browser-Phone-Core/Documentation/api/phone.flagmessage.md) | Flag a message. |
+|  [phone.GetSession()](./projects/Browser-Phone-Core/Documentation/api/phone.getsession.md) | Gets a session by id. |
 |  [phone.GetActiveSessions()](./projects/Browser-Phone-Core/Documentation/api/phone.getactivesessions.md) | Returns all active sessions across every buddy. |
 |  [phone.GetSessions()](./projects/Browser-Phone-Core/Documentation/api/phone.getsessions.md) | Returns all sessions across every buddy. |
 |  [phone.GetBuddySessions()](./projects/Browser-Phone-Core/Documentation/api/phone.getbuddysessions.md) | Returns the sessions belonging to a buddy. |

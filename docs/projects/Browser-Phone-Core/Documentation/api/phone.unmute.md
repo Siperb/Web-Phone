@@ -1,6 +1,6 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Core](../../../../README.md#browser-phone-core)
 
-## phone.Unmute() method
+## phone.Unmute() function
 
 Unmutes a call.
 
@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-Unmute(param: string | SessionObject | BuddyObject): Promise<SessionObject | undefined>;
+phone.Unmute(param: string | SessionObject | BuddyObject): Promise<SessionObject | undefined>;
 ```
 
 ## Parameters

@@ -1,6 +1,6 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Core](../../../../README.md#browser-phone-core)
 
-## phone.GetRecording() method
+## phone.GetRecording() function
 
 Retrieves a previously saved recording by its ID.
 
@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-GetRecording(recordingId: string): Promise<RecordingObject | null>;
+phone.GetRecording(recordingId: string): Promise<RecordingObject | null>;
 ```
 
 ## Parameters

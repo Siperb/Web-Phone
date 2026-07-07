@@ -1,6 +1,6 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Core](../../../../README.md#browser-phone-core)
 
-## phone.SendDtmf() method
+## phone.SendDtmf() function
 
 Send DTMF to a session.
 
@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-SendDtmf(sessionId: string, dtmf: string): boolean;
+phone.SendDtmf(sessionId: string, dtmf: string): boolean;
 ```
 
 ## Parameters

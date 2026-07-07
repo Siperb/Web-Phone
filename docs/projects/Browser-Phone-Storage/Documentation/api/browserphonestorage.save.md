@@ -1,23 +1,15 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Storage](../../../../README.md#browser-phone-storage)
 
-## BrowserPhoneStorage.Save() method
+## phone.SaveToStorage() function
 
-Write `data` to `window.localStorage` under `key`.
+Save `data` to `window.localStorage` under `key`. Part of the Phone API — installed on `window.phone.SaveToStorage` by [HookupLocalStorageCallbacks()](./browserphonestorage.hookuplocalstoragecallbacks.md).
 
 Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_API.md).
 
 <b>Signature:</b>
 
 ```typescript
-Save(key: string, data: any): void;
-```
-
-## Phone API usage
-
-Preferred entry point — installed on the global phone object as `window.phone.SaveToStorage`:
-
-```typescript
-window.phone.SaveToStorage("myKey", JSON.stringify(value));
+phone.SaveToStorage(key: string, data: any): void;
 ```
 
 ## Parameters
@@ -33,4 +25,4 @@ void
 
 ## Remarks
 
-On failure, logs `console.error` and rethrows a wrapped error: `Storage save failed: <message>`. No JSON handling is performed — a previous attempt to auto-parse on [Get()](./browserphonestorage.get.md) broke a downstream consumer that did its own `JSON.parse` and was reverted; do not reintroduce auto-stringify/parse.
+Runtime closure over the backing class method [BrowserPhoneStorage.Save()](./browserphonestorage.md). On failure, logs `console.error` and rethrows a wrapped error: `Storage save failed: <message>`. No JSON handling is performed — a previous attempt to auto-parse on [phone.LoadFromStorage()](./browserphonestorage.get.md) broke a downstream consumer that did its own `JSON.parse` and was reverted; do not reintroduce auto-stringify/parse.

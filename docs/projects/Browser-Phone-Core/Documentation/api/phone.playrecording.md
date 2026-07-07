@@ -1,6 +1,6 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Core](../../../../README.md#browser-phone-core)
 
-## phone.PlayRecording() method
+## phone.PlayRecording() function
 
 Plays a saved recording by object or ID, handling DOM and cleanup.
 
@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-PlayRecording(recording: RecordingObject | string): Promise<void>;
+phone.PlayRecording(recording: RecordingObject | string): Promise<void>;
 ```
 
 ## Parameters

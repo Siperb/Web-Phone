@@ -1,6 +1,6 @@
 [Home](../../../../README.md) &gt; [Browser-Phone-Core](../../../../README.md#browser-phone-core)
 
-## phone.Dial() method
+## phone.Dial() function
 
 Dials a call to the given param. Works with or without await.
 
@@ -9,7 +9,7 @@ Part of the Phone API (tagged `@PhoneAPI`); listed in [PHONE_API.md](../PHONE_AP
 <b>Signature:</b>
 
 ```typescript
-Dial(param: string | BuddyObject, withVideo?: boolean, provider?: string): Promise<string | undefined>;
+phone.Dial(param: string | BuddyObject, withVideo?: boolean, provider?: string): Promise<string | undefined>;
 ```
 
 ## Parameters
