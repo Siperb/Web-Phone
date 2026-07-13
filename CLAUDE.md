@@ -8,5 +8,5 @@ manifest drives exactly which files are copied. This repo does not edit those so
 To refresh: edit `PROJECTS_DOCS.md` (one absolute repo path per line under `Projects:`) and run
 `/web-phone-documentation`. Landing page: `docs/README.md`.
 
-_Last updated: 2026-07-07._
+_Last updated: 2026-07-13._
 <!-- web-phone-documentation:end -->

@@ -49,6 +49,10 @@ Many of the call-control methods accept a flexible `param` that may be a `sessio
 |  [PlayRecording](./phone.playrecording.md) | <code>PlayRecording(recording: RecordingObject \| string): Promise&lt;void&gt;</code> | Plays a saved recording (by object or ID), managing the audio element DOM and cleanup. (Phone API) |
 |  [GenerateRecordingThumbnail](./phone.generaterecordingthumbnail.md) | <code>GenerateRecordingThumbnail(recording: RecordingObject \| string): Promise&lt;string \| null&gt;</code> | Returns a JPEG thumbnail data URL for a video recording, generating and persisting it if absent; null for audio-only or on error. |
 |  [GetSubscriptions](./phone.getsubscriptions.md) | <code>GetSubscriptions(): BuddyObject[]</code> | Returns the `MyBuddies` entries currently flagged `Subscribe`. |
+|  [GetRecentCalls](./phone.getrecentcalls.md) | <code>GetRecentCalls(filter: string): Promise&lt;Array&lt;{ Name: string; Number: string; Direction: string; Timestamp: string }&gt;&gt;</code> | Returns up to 50 recent CDR records from the `MessageStream` store (newest first), optionally filtered by number/name/direction (email filters are MD5-hashed). (Phone API) |
+|  [LoadAddressBook](./phone.loadaddressbook.md) | <code>LoadAddressBook(): Promise&lt;any[]&gt;</code> | Lazy-loads and returns the address book entries from the `AddressBook` IndexStorage store, caching them on `phone.AddressBook`. (Phone API) |
+|  [AddAddressBookEntry](./phone.addaddressbookentry.md) | <code>AddAddressBookEntry(entry: any): Promise&lt;void&gt;</code> | Adds an entry to `phone.AddressBook` (assigning an `Id` via `phone.UID()` if absent) and persists it to the `AddressBook` store. (Phone API) |
+|  [DeleteAddressBookEntry](./phone.deleteaddressbookentry.md) | <code>DeleteAddressBookEntry(entryId: string): Promise&lt;void&gt;</code> | Removes the entry with the given `Id` from `phone.AddressBook` and deletes it from the `AddressBook` store. (Phone API) |
 
 ## Example
 

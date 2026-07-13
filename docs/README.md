@@ -15,17 +15,16 @@ click a document for its full reference page.
 
 ## Browser-Phone-Storage
 
-**Exposed:** <code>phone.SaveToStorage</code>, <code>phone.LoadFromStorage</code>, <code>phone.IndexStorage.GetBuddyById</code>
+**Exposed:** <code>phone.SaveToStorage</code>, <code>phone.LoadFromStorage</code>, <code>phone.LoadBuddy</code>
 
 |  Document | Description |
 |  --- | --- |
 |  [phone.SaveToStorage()](./projects/Browser-Phone-Storage/Documentation/api/browserphonestorage.save.md) | Save <code>data</code> to <code>window.localStorage</code> under <code>key</code>. |
 |  [phone.LoadFromStorage()](./projects/Browser-Phone-Storage/Documentation/api/browserphonestorage.get.md) | Read the raw string stored at <code>key</code>. |
-|  [phone.IndexStorage.GetBuddyById()](./projects/Browser-Phone-Storage/Documentation/api/indexstorage.getbuddybyid.md) | Fetch a single <code>MyBuddies</code> record by its id. |
+|  [phone.LoadBuddy()](./projects/Browser-Phone-Storage/Documentation/api/browserphonestorage.getbuddybyid.md) | Fetch a single <code>MyBuddies</code> record by its id. |
 
 ## Browser-Phone-Core
 
-**Exposed:** <code>InitPhoneAPI</code>, <code>phone.Dial</code>, <code>phone.EndCall</code>, <code>phone.Answer</code>, <code>phone.Decline</code>, <code>phone.Hold</code>, <code>phone.Unhold</code>, <code>phone.Mute</code>, <code>phone.Unmute</code>, <code>phone.BlindTransfer</code>, <code>phone.AttendedTransfer</code>, <code>phone.CompleteTransfer</code>, <code>phone.CancelTransfer</code>, <code>phone.SendDtmf</code>, <code>phone.AddBuddy</code>, <code>phone.DeleteBuddy</code>, <code>phone.UpdateBuddy</code>, <code>phone.SaveRecording</code>, <code>phone.GetRecording</code>, <code>phone.PlayRecording</code>, <code>phone.SaveBuddy</code>, <code>phone.AddMessage</code>, <code>phone.SaveMessage</code>, <code>phone.LoadMessage</code>, <code>phone.LoadBuddyMessages</code>, <code>phone.FlagMessage</code>, <code>phone.GetSession</code>, <code>phone.GetActiveSessions</code>, <code>phone.GetSessions</code>, <code>phone.GetBuddySessions</code>, <code>phone.OnSessionChange</code>, <code>phone.OnIncomingCall</code>
 
 |  Document | Description |
 |  --- | --- |
@@ -49,17 +48,45 @@ click a document for its full reference page.
 |  [phone.SaveRecording()](./projects/Browser-Phone-Core/Documentation/api/phone.saverecording.md) | Saves a call recording to persistent storage. |
 |  [phone.GetRecording()](./projects/Browser-Phone-Core/Documentation/api/phone.getrecording.md) | Retrieves a previously saved recording by its ID. |
 |  [phone.PlayRecording()](./projects/Browser-Phone-Core/Documentation/api/phone.playrecording.md) | Plays a saved recording by object or ID, handling DOM and cleanup. |
+|  [phone.GetRecentCalls()](./projects/Browser-Phone-Core/Documentation/api/phone.getrecentcalls.md) | Retrieves recent call records (CDRs) from the <code>MessageStream</code> collection, optionally filtered by a search string. |
+|  [phone.LoadAddressBook()](./projects/Browser-Phone-Core/Documentation/api/phone.loadaddressbook.md) | Retrieves the address book entries, lazy-loading them from local storage on first use. |
+|  [phone.AddAddressBookEntry()](./projects/Browser-Phone-Core/Documentation/api/phone.addaddressbookentry.md) | Adds a new entry to the address book and persists it to indexed storage. |
+|  [phone.DeleteAddressBookEntry()](./projects/Browser-Phone-Core/Documentation/api/phone.deleteaddressbookentry.md) | Deletes an entry from the address book and removes it from indexed storage. |
+|  [phone.GetBuddyByContact()](./projects/Browser-Phone-Core/Documentation/api/phone.getbuddybycontact.md) | Get a buddy by a contact number. |
+|  [phone.GetBuddyById()](./projects/Browser-Phone-Core/Documentation/api/phone.getbuddybyid.md) | Get a buddy by id. |
 |  [phone.SaveBuddy()](./projects/Browser-Phone-Core/Documentation/api/phone.savebuddy.md) | Save a buddy to the storage. |
+|  [phone.LoadBuddies()](./projects/Browser-Phone-Core/Documentation/api/phone.loadbuddies.md) | Load the buddies from the storage. |
+|  [phone.CreateValidBuddy()](./projects/Browser-Phone-Core/Documentation/api/phone.createvalidbuddy.md) | Normalize a partial buddy into a complete, valid <code>BuddyObject</code>. |
 |  [phone.AddMessage()](./projects/Browser-Phone-Core/Documentation/api/phone.addmessage.md) | Add a message to the message stream. |
 |  [phone.SaveMessage()](./projects/Browser-Phone-Core/Documentation/api/phone.savemessage.md) | Save a message to the message stream. |
+|  [phone.UpdateMessage()](./projects/Browser-Phone-Core/Documentation/api/phone.updatemessage.md) | Update one message by Id, accepting a full message object or a partial patch. |
 |  [phone.LoadMessage()](./projects/Browser-Phone-Core/Documentation/api/phone.loadmessage.md) | Load a message from the message stream. |
 |  [phone.LoadBuddyMessages()](./projects/Browser-Phone-Core/Documentation/api/phone.loadbuddymessages.md) | Load the messages for a buddy. |
+|  [phone.BuildMessageStreamItem()](./projects/Browser-Phone-Core/Documentation/api/phone.buildmessagestreamitem.md) | Build a MessageStreamItem from a message. |
+|  [phone.UpdateCallDetailRecord()](./projects/Browser-Phone-Core/Documentation/api/phone.updatecalldetailrecord.md) | Update an existing call-detail record, or construct and save a new one. |
 |  [phone.FlagMessage()](./projects/Browser-Phone-Core/Documentation/api/phone.flagmessage.md) | Flag a message. |
-|  [phone.GetSession()](./projects/Browser-Phone-Core/Documentation/api/phone.getsession.md) | Gets a session by id. |
+|  [phone.OnMessageSent()](./projects/Browser-Phone-Core/Documentation/api/phone.onmessagesent.md) | Marks a message as sent-pending and refreshes the UI. |
+|  [phone.OnMessageReceived()](./projects/Browser-Phone-Core/Documentation/api/phone.onmessagereceived.md) | Handles an inbound message: resolves (or creates) the sender buddy, builds and persists an inbound message stream item, and raises the received-message event. |
 |  [phone.GetActiveSessions()](./projects/Browser-Phone-Core/Documentation/api/phone.getactivesessions.md) | Returns all active sessions across every buddy. |
+|  [phone.UpdateSession()](./projects/Browser-Phone-Core/Documentation/api/phone.updatesession.md) | Merges a session's fields into the matching stored session and re-renders. |
+|  [phone.AddSession()](./projects/Browser-Phone-Core/Documentation/api/phone.addsession.md) | Adds a session to a buddy's session list and re-renders. |
+|  [phone.GetSession()](./projects/Browser-Phone-Core/Documentation/api/phone.getsession.md) | Gets a session by id. |
 |  [phone.GetSessions()](./projects/Browser-Phone-Core/Documentation/api/phone.getsessions.md) | Returns all sessions across every buddy. |
 |  [phone.GetBuddySessions()](./projects/Browser-Phone-Core/Documentation/api/phone.getbuddysessions.md) | Returns the sessions belonging to a buddy. |
-|  [phone.OnSessionChange()](./projects/Browser-Phone-Core/Documentation/api/phone.onsessionchange.md) | Registers a callback for session state changes. |
 |  [phone.OnIncomingCall callback slot](./projects/Browser-Phone-Core/Documentation/api/phone.onincomingcall.md) | Assignable callback slot the host app sets to receive incoming-call details. |
+|  [phone.RaiseEvent()](./projects/Browser-Phone-Core/Documentation/api/phone.raiseevent.md) | Central event dispatcher. |
+|  [InitPhoneEvents()](./projects/Browser-Phone-Core/Documentation/api/initphoneevents.md) | Initializes the phone events system: defines the <code>EventTypes</code> constant map and installs the <code>RaiseEvent</code> dispatch function onto <code>window.phone</code>. |
+|  [Browser-Phone-Core-Types](./projects/Browser-Phone-Core/Documentation/api/browser-phone-core-types.md) | The shared TypeScript type surface for Browser-Phone-Core, declared in <code>src/Browser-Phone-Core-Types.ts</code>. |
+|  [ContactObject](./projects/Browser-Phone-Core/Documentation/api/contactobject.md) | A single addressable contact method (number/email + metadata). |
+|  [ReceivedMessage](./projects/Browser-Phone-Core/Documentation/api/receivedmessage.md) | Incoming SIP MESSAGE payload delivered to <code>OnMessageReceived</code>. |
+|  [SessionEvent](./projects/Browser-Phone-Core/Documentation/api/sessionevent.md) | A timestamped entry in a session's activity log. |
+|  [PhoneSettings](./projects/Browser-Phone-Core/Documentation/api/phonesettings.md) | Global phone configuration. |
+|  [PhoneEvent](./projects/Browser-Phone-Core/Documentation/api/phoneevent.md) | Payload dispatched through <code>RaiseEvent</code>. |
+|  [SessionObject](./projects/Browser-Phone-Core/Documentation/api/sessionobject.md) | A live call session and its full runtime state. |
+|  [BuddyObject](./projects/Browser-Phone-Core/Documentation/api/buddyobject.md) | A contact/buddy with its contacts, sessions, and message stream. |
+|  [MessageType](./projects/Browser-Phone-Core/Documentation/api/messagetype.md) | Message-stream item kind: <code>MSG</code> / <code>CDR</code> / <code>SYSTEM</code>. |
+|  [MessageDeliveryStatus](./projects/Browser-Phone-Core/Documentation/api/messagedeliverystatus.md) | Delivery-status states for an outbound message. |
+|  [MessageStreamItem](./projects/Browser-Phone-Core/Documentation/api/messagestreamitem.md) | One item (MSG/CDR/SYSTEM) in a buddy's message stream. |
+|  [RecordingObject](./projects/Browser-Phone-Core/Documentation/api/recordingobject.md) | A call recording record. |
 
-_Last updated: 2026-07-07._
+_Last updated: 2026-07-13._
