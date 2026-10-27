@@ -20,6 +20,20 @@ SIP, media, call state and local storage; you decide how it looks.
 Each guide ends in working code, and the repository has a runnable page for each:
 `test-Headless.html`, `test-Browser-Phone.html`, `test-SIPJS.html` and `test-JSSIP.html`.
 
+## Scenarios
+
+Worked examples, each a complete piece of a real phone:
+
+| You want to | Read |
+| --- | --- |
+| Dial, show call progress and a timer, hold, mute, hang up | [A call screen](./scenarios/call-screen.md) |
+| Show a ringing call, answer, decline, handle a second call | [Incoming calls](./scenarios/incoming-calls.md) |
+| Transfer a call, or bring a third person in | [Transfers and conferences](./scenarios/transfer-and-conference.md) |
+| A contact list and a conversation, with delivery ticks | [Chat](./scenarios/chat.md) |
+| Show the far end's video and your own camera, share the screen | [Video calls](./scenarios/video-calls.md) |
+| Call the `tel:` links on your page | [Click-to-dial](./scenarios/click-to-dial.md) |
+| Connect to Asterisk, FreeSWITCH or another SIP server | [Your own SIP server](./scenarios/own-sip-server.md) |
+
 ## Reference
 
 The SDK, `window.phone`:

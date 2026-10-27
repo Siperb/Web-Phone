@@ -49,6 +49,7 @@ never both refused and answered.
 | `DialSetupTimeoutSeconds` | | `10` | How long a call waits to be online, registered and allowed the microphone before it fails. See [Calls](./calls.md#what-happens-before-the-far-end-rings). |
 | `EnableDialWithoutRegister` | on when `true` | off | Send a call even when the account is not registered, for a server that does not require registration. |
 | `EnableDialOffline` | on when `true` | off | Send a call even when the device reports it is offline. |
+| `EnableAlphanumericDial` | on when `true` | off | Let a dialled number contain letters, for servers whose users dial names (`"reception"`, `"alice.smith"`). Off keeps only digits, `+`, `*` and `#`, which strips the formatting of a written number such as `(555) 123-4567`. Applies to calls, messages and transfers. |
 | `EnableEarlyMedia` | on when `true` | off | Play the far end's audio before it answers (announcements, network ringback). Off is safer with servers that ring several devices at once. |
 | `DtmfType` | | `"inband"` | `"inband"` sends keypad tones in the audio (RFC 4733), `"info"` as SIP INFO, `"none"` not at all. |
 | `EnableDtmfActivityHiding` | on when `true` | off | Record the tones a user types (a PIN, a card number) as `•` in the call's history and the console, instead of the digits. The tones themselves are sent as normal. |

@@ -42,7 +42,10 @@ Places a call and resolves to the new **session id**, or `undefined` if the call
 
 `target` can be:
 
-- a phone number or SIP user, `"+15551234567"` or `"2001"`;
+- a phone number or extension, `"+15551234567"`, `"(555) 123-4567"` or `"2001"`. The formatting is
+  stripped for you: only digits, `+`, `*` and `#` are kept, unless you turn on
+  [`EnableAlphanumericDial`](./settings.md#calls) to dial names. The call goes to
+  `sip:<number>@<SipDomain>`;
 - a buddy (a contact object from `phone.MyBuddies`), which calls their first number;
 - an options object: `{ Target, WithVideo }`, or `{ Buddy, Target }` to call a particular number of
   that buddy.

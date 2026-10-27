@@ -35,7 +35,10 @@ truth for the SDK.
    Do not re-run that skill: it would overwrite the index with the old, internal-facing one.
    The old generated pages (`docs/projects/`, `DEVELOPER.md`, `TESTING.md`, `Settings.md`,
    `Provisioning.md`) are deleted; the hand-written `docs/reference/` pages replace them, and
-   are checked against SDK source whenever the public surface changes.
+   are checked against SDK source whenever the public surface changes. `docs/scenarios/` holds the
+   worked examples (call screen, incoming calls, transfers and conferences, chat, video,
+   click-to-dial, your own SIP server); their code is held to the same standard, so an SDK change
+   that alters a recipe updates the scenario too.
 
 ## The version tree
 

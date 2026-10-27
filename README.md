@@ -83,10 +83,19 @@ Everything is in [`docs/`](./docs/README.md): the getting-started guides, and a 
 [messaging](./docs/reference/messaging.md), [settings](./docs/reference/settings.md),
 [types](./docs/reference/types.md) and [the loader](./docs/reference/loader.md).
 
+Worked scenarios build the pieces of a real phone: [a call screen](./docs/scenarios/call-screen.md),
+[incoming calls](./docs/scenarios/incoming-calls.md),
+[transfers and conferences](./docs/scenarios/transfer-and-conference.md),
+[chat](./docs/scenarios/chat.md), [video calls](./docs/scenarios/video-calls.md),
+[click-to-dial](./docs/scenarios/click-to-dial.md) and
+[your own SIP server](./docs/scenarios/own-sip-server.md).
+
 ## Click to dial
 
 Once the phone is running, your page can place calls with `phone.Dial(number)`, which gives your
 CRM, website, ERP, SaaS or intranet [click to dial](https://www.web-phone.org/click-to-dial/).
+[Click-to-dial](./docs/scenarios/click-to-dial.md) shows how to turn every `tel:` link on a page
+into a call.
 
 ## Running the examples locally
 
