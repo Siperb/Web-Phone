@@ -33,7 +33,9 @@ truth for the SDK.
 7. **`docs/README.md` is hand-written.** It used to be generated from `PROJECTS_DOCS.md` by the
    `web-phone-documentation` skill, which copied internal reference pages into `docs/projects/`.
    Do not re-run that skill: it would overwrite the index with the old, internal-facing one.
-   `docs/projects/` describes a frozen old core and is being retired.
+   The old generated pages (`docs/projects/`, `DEVELOPER.md`, `TESTING.md`, `Settings.md`,
+   `Provisioning.md`) are deleted; the hand-written `docs/reference/` pages replace them, and
+   are checked against SDK source whenever the public surface changes.
 
 ## The version tree
 

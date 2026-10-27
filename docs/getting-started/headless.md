@@ -56,7 +56,7 @@ try {
     await phone.Init({
         ProfileUserId: "alice",          // keeps this account's local data separate
         wssServer: "sip.example.com",    // your WebRTC SIP server's WebSocket host
-        WebSocketPort: 443,              // default 443
+        WebSocketPort: 443,              // the SDK defaults to 4443
         ServerPath: "/ws",               // default "/ws"
         SipUsername: "alice",
         SipPassword: "secret",
@@ -110,3 +110,5 @@ not dropped: it goes out as soon as the phone is registered, or ends with a reas
 - [The embedded Browser Phone](./iframe-phone.md), if you would rather drop in a finished UI.
 - [Siperb provisioning](./siperb-provisioning.md), to get server and credentials from a Siperb account.
 - [Other SIP libraries](./sip-libraries.md): SIP.js, JsSIP or your own client.
+- The reference: [calls](../reference/calls.md), [events](../reference/events.md) and
+  [settings](../reference/settings.md), and the rest of the [docs index](../README.md#reference).

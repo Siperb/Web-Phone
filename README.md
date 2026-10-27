@@ -77,8 +77,11 @@ See [Siperb provisioning](./docs/getting-started/siperb-provisioning.md) and
 
 ## Documentation
 
-Everything is in [`docs/`](./docs/README.md): the getting-started guides, and the
-[loader reference](./docs/reference/loader.md).
+Everything is in [`docs/`](./docs/README.md): the getting-started guides, and a reference for
+[starting the phone](./docs/reference/init.md), [calls](./docs/reference/calls.md),
+[events](./docs/reference/events.md), [contacts and history](./docs/reference/contacts-and-history.md),
+[messaging](./docs/reference/messaging.md), [settings](./docs/reference/settings.md),
+[types](./docs/reference/types.md) and [the loader](./docs/reference/loader.md).
 
 ## Click to dial
 

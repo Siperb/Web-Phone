@@ -22,12 +22,25 @@ Each guide ends in working code, and the repository has a runnable page for each
 
 ## Reference
 
+The SDK, `window.phone`:
+
+| Page | Covers |
+| --- | --- |
+| [Starting the phone](./reference/init.md) | `phone.Init()` options and errors, the connection, `phone.SDKVersion` |
+| [Calls](./reference/calls.md) | Dial, answer, hold, mute, DTMF, video, transfers, conferences, recording, screen sharing |
+| [Events](./reference/events.md) | Everything you can subscribe to with `phone.On()`, and the payloads |
+| [Contacts, calls and history](./reference/contacts-and-history.md) | The contact list, calls in progress, recent calls |
+| [Messaging](./reference/messaging.md) | Sending and receiving text messages, delivery status |
+| [Settings](./reference/settings.md) | `phone.Settings`: incoming-call handling, devices, recording, call quality |
+| [Types](./reference/types.md) | The fixed values: call states and statuses, outcomes, message and error types |
+
+The loader, `window.Siperb`:
+
 - [The loader](./reference/loader.md): `Siperb.Login`, `GetDevices`, `GetProvisioning`,
   `LoadBrowserPhone`, `ProvisionPhone`.
 
-A full reference for the SDK's `phone.*` members and its events is on the way. Until it lands, the
-members and events in the guides above are the supported surface. Anything you find on `window.phone`
-that these pages do not describe is internal, and may change without notice.
+These pages are the supported surface. Anything you find on `window.phone` that they do not
+describe is internal, and may change without notice.
 
 ## Running the examples locally
 
