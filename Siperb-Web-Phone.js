@@ -254,15 +254,17 @@ const Siperb = {
             const PhoneWindow = iframeElement.contentWindow;
             const phoneDoc = PhoneWindow.document;
             // Load the Browser Phone Layer
-            let treeUrl = "https://y3amulnpc5icrmmnmvtfn44zba0ckjuq.lambda-url.eu-west-1.on.aws/";
+            let treeUrl = "https://api.siperb.com/VersionTree/?layer=phone&mode=live&platform=web";
             if(typeof window !== 'undefined' && typeof window.localStorage !== "undefined"){
                 if(localStorage.getItem("DEV_MODE") == "yes"){
                     window.SiperbAPI.DevMode = true;
-                    treeUrl = "https://vgf6bcf26w6wime5enpyflps640yhqmb.lambda-url.eu-west-1.on.aws/";
-                    console.log("LoadBrowserPhone: %cDEV_MODE enabled, using local version tree", "color: green; font-weight: bold;");
+                    treeUrl = "https://api.siperb.com/VersionTree/?layer=phone&mode=dev&platform=web";
+                    console.log("LoadBrowserPhone: %cDEV_MODE enabled, using the dev version tree", "color: green; font-weight: bold;");
                 }
             }
-            let phoneVersionTree = await Siperb.LoadVersionTree(treeUrl, "BROWSER_PHONE_VERSION_TREE");
+            // The cache key is versioned: the previous tree (a different shape, and the old
+            // phone core) is still cached in returning browsers, and is served cache-first.
+            let phoneVersionTree = await Siperb.LoadVersionTree(treeUrl, "BROWSER_PHONE_VERSION_TREE_V2");
             if (!phoneVersionTree) {
                 console.log(`LoadBrowserPhone: %cPhone Version tree could not be loaded`, "color: red;");
                 return reject("Phone Version tree could not be loaded");
@@ -335,17 +337,32 @@ const Siperb = {
             }
         });
     },
+    // Internal: does this version-tree asset belong on this platform?
+    // Platform is an array (["web", "electron"]); older trees used a string ("common"/"web").
+    ForPlatform(asset, platform) {
+        const p = asset.Platform;
+        if (Array.isArray(p)) return p.indexOf(platform) !== -1;
+        return p == "common" || p == platform;
+    },
     // Internal Function to Load HTML files
     LoadHtml(versionTree, platform, target) {
         // Return a promise that resolves when all the HTML files are loaded
         return new Promise(function (resolve, reject) {
+            // Only a matching html asset resolves this promise, so with none it would hang.
+            const hasHtml = versionTree.some(function (asset) {
+                return Siperb.ForPlatform(asset, platform) && asset.Type == "html";
+            });
+            if (!hasHtml) {
+                console.log("LoadHtml: %cNo HTML file in the version tree", "color: red;");
+                return resolve();
+            }
             // Load the HTML files
             versionTree.forEach(async function (asset) {
                 if (!asset.Url.startsWith("/") & !asset.Url.startsWith("https://cdn.siperb.com/")) {
                     console.log(`LoadHtml: %cUnable to load HTML: ${asset.Url}`, "color: red;");
                     return; // Skip assets that are not from the CDN
                 }
-                if ((asset.Platform == "common" || asset.Platform == platform) && asset.Type == "html") {
+                if (Siperb.ForPlatform(asset, platform) && asset.Type == "html") {
                     try{
                         let response = await fetch(asset.Url);
                         if (!response.ok) {
@@ -389,7 +406,7 @@ const Siperb = {
                     console.log(`LoadCss: %cUnable to load CSS: ${asset.Url}`, "color: red;");
                     return; // Skip assets that are not from the CDN
                 }
-                if ((asset.Platform == "common" || asset.Platform == platform) && asset.Type == "css") {
+                if (Siperb.ForPlatform(asset, platform) && asset.Type == "css") {
                     // Create a link element and set the href to the asset URL
                     let link = target.createElement("link");
                     link.href = asset.Url;
@@ -409,7 +426,7 @@ const Siperb = {
     LoadScripts(versionTree, platform, target) {
         return new Promise(function (resolve, reject) {
             const jsAssets = versionTree.filter(function (asset) {
-                return (asset.Platform == "common" || asset.Platform == platform) && asset.Type == "js";
+                return Siperb.ForPlatform(asset, platform) && asset.Type == "js";
             });
 
             if (jsAssets.length === 0) {
@@ -442,6 +459,10 @@ const Siperb = {
                             if (!dependency.Url.startsWith("https://cdn.siperb.com/")) {
                                 return;
                             }
+                            // Already in the tree as its own entry, so already loading.
+                            if (jsAssets.some(function (a) { return a.Url === dependency.Url; })) {
+                                return;
+                            }
                             let depScript = target.createElement("script");
                             depScript.onload = function () {
                                 dependency.Loaded = true;
@@ -466,6 +487,9 @@ const Siperb = {
                     console.log(`LoadScripts: %cError loading JS: ${asset.Url}`, "color: red;");
                     fail(asset.Url);
                 };
+                // Run in tree order (the SDK before the UI that uses it); an inserted
+                // script is otherwise async and runs in whatever order it arrives.
+                script.async = false;
                 script.src = asset.Url;
                 target.head.appendChild(script);
             });
@@ -518,7 +542,7 @@ const Siperb = {
             // ======================
             phone.Settings.MediaLocation = "https://cdn.siperb.com/media/";          // Defaults to "./media/"
             console.log("ProvisionPhone: %cCalling phone.InitMediaManager()", "color: blue;");
-            await phone.InitMediaManager(phone.MediaManagerCore.Web);
+            await phone.InitMediaManager();
 
 
             // Browser Phone UI
@@ -585,43 +609,37 @@ const Siperb = {
             console.log("Calling phone.InitUiApi()... ");
             await phone.InitUiApi();
 
-            // Load Providers
-            if (phone.InitSipProvider) {
-                await phone.InitSipProvider(phone.SipProviderCore.Web);
-                phone.AddProvider(phone.SipProvider);
-                let phoneOptions  = {
-                    // We set the SIP details, but don't save them
-                    wssServer: provisioning.SipWssServer,
-                    SipUsername: provisioning.SipUsername,
-                    SipPassword: provisioning.SipPassword,
-                    SipDomain: provisioning.SipDomain,
-                    DisplayName: phone.Settings.ProfileUserName,
-                    ContactUserName: provisioning.SipContact,
-                    WebSocketPort: provisioning.SipWebsocketPort,
-                    ServerPath: provisioning.SipServerPath,
-                    UserAgentStr: "Siperb/0.4 (Script) "+ navigator.userAgent,
-                    // RegisterContactParams : AdditionalContactParams //(this is for push notifications)
-                }
-                if(provisioning.RegistrationMode == "Proxy" || provisioning.SipWssServer.endsWith(".siperb.com")){
-                    phoneOptions.ExtraRegisterHeaders = {
-                        "X-Siperb-Sid": options.SessionId,
-                        "X-Siperb-Uid": options.UserId,
-                    }
-                    // Optionally Add Bearer Token for JWT Authentication
-                    if(provisioning.SipJwt && provisioning.SipJwt != ""){
-                        phoneOptions.ExtraRegisterHeaders.Authorization = "Bearer " + provisioning.SipJwt;
-                    }
-                    phoneOptions.ExtraInviteHeaders = {
-                        "X-Siperb-Sid": options.SessionId,
-                        "X-Siperb-Uid": options.UserId,
-                    }
-                    // Optionally Add Bearer Token for JWT Authentication
-                    if(provisioning.SipJwt && provisioning.SipJwt != ""){
-                        phoneOptions.ExtraInviteHeaders.Authorization = "Bearer " + provisioning.SipJwt;
-                    }
-                }
-                await phone.SipProvider.Init(phoneOptions);
-                phone.SipProvider.Connect();
+            // SIP: one phone.Init() call starts the SIP stack, connects and registers.
+            // The provisioning is passed in by name - nothing here is saved to storage.
+            const phoneOptions = {
+                wssServer: provisioning.SipWssServer,
+                WebSocketPort: provisioning.SipWebsocketPort,
+                ServerPath: provisioning.SipServerPath,
+                SipUsername: provisioning.SipUsername,
+                SipPassword: provisioning.SipPassword,
+                SipDomain: provisioning.SipDomain,
+                ContactUserName: provisioning.SipContact,
+                DisplayName: phone.Settings.ProfileUserName,
+                UserAgentStr: "Siperb/0.4 (Script) " + navigator.userAgent,
+            };
+            // A Siperb server identifies the session and user from these headers.
+            // Another SIP server gets none of them.
+            if (provisioning.RegistrationMode == "Proxy" || String(provisioning.SipWssServer || "").endsWith(".siperb.com")) {
+                const headers = {
+                    "X-Siperb-Sid": options.SessionId,
+                    "X-Siperb-Uid": options.UserId,
+                };
+                if (provisioning.SipJwt) headers.Authorization = "Bearer " + provisioning.SipJwt;
+                phoneOptions.ExtraRegisterHeaders = Object.assign({}, headers);
+                phoneOptions.ExtraInviteHeaders = Object.assign({}, headers);
+            }
+            console.log("ProvisionPhone: %cCalling phone.Init()", "color: blue;");
+            try {
+                await phone.Init(phoneOptions);
+            } catch (e) {
+                // phone.Init throws when it cannot connect (e.g. missing credentials).
+                console.log(`ProvisionPhone: %c${e && e.message ? e.message : e}`, "color: red;");
+                return reject(e);
             }
             console.log("ProvisionPhone: %cProvisioning Complete", "color: green;");
             return resolve(phone);

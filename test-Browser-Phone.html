@@ -77,8 +77,10 @@
                 DisplayTimeFormat : 'hh:mm A',          // Moment JS date time format
                 UiThemeStyle : 'light',                 // 'light', 'dark', or 'system'
                 // Optional: Callback when the phone UI has loaded and is ready
+                // (This runs while ProvisionPhone is still working, so use the
+                // iframe's phone here - phoneAPI below is not assigned yet.)
                 OnLoad : function(){
-                    phoneAPI.Toast("Browser Phone UI has loaded and is ready.");
+                    thePhoneFrame.contentWindow.phone.Toast("Browser Phone UI has loaded and is ready.");
                 }
             });
 
@@ -97,9 +99,6 @@
             phoneAPI.OnProfilePicture = function () {
                 // Your code here
             }
-            phoneAPI.OnProfileText = function () {
-                // Your code here
-            }
 
             // Done
             console.log('✅ Browser Phone provisioned and running.');
@@ -116,7 +115,7 @@
 
                 // Now you have access to the phone API
                 const numberToDial = '*65';
-                const sessionId = await phone.Dial(numberToDial, false, 'sip');
+                const sessionId = await phone.Dial(numberToDial);
                 console.log('Dialed number:', numberToDial, 'Session ID:', sessionId);
             });
             document.getElementById('sample_dtmf_1').addEventListener('click', async () => {
@@ -131,7 +130,7 @@
                     return;
                 }
                 const session = sessions[0];
-                await phone.OnSendDtmf('1', session);
+                await phone.SendDtmf(session, '1');
                 console.log('Sent DTMF "1" to session:', session.Id);
             });
             document.getElementById('sample_dtmf_123').addEventListener('click', async () => {
@@ -146,11 +145,11 @@
                     return;
                 }
                 const session = sessions[0];
-                await phone.OnSendDtmf('1', session);
+                await phone.SendDtmf(session, '1');
                 await wait(1000);
-                await phone.OnSendDtmf('1', session);
+                await phone.SendDtmf(session, '2');
                 await wait(1000);
-                await phone.OnSendDtmf('1', session);
+                await phone.SendDtmf(session, '3');
                 console.log('Sent DTMF "123" to session:', session.Id);
             });
         }

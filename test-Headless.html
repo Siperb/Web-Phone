@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Headless SDK Test</title>
+    <meta charset="utf-8">
+    <!--
+        The headless path: load the SDK yourself, subscribe to its events, call phone.Init(),
+        and build whatever UI you like on top. No iframe, no phone UI.
+
+        Pin the SDK version you test against. A newer version may add members, but a pinned
+        URL never changes underneath you.
+    -->
+    <!--
+        Only needed for the Siperb provisioning path (Siperb.Login / Siperb.GetProvisioning).
+        Load it BEFORE the SDK: it assigns window.Siperb, while the SDK adds to whatever is there.
+    -->
+    <script src="./dist/Siperb-Web-Phone.umd.min.js"></script>
+    <script src="https://cdn.siperb.com/lib/Browser-Phone-SDK/browser-phone-sdk-1.0.208.min.js"></script>
+    <!-- Optional, gitignored: window.PERSONAL_ACCESS_TOKEN and window.DEVICE_TOKEN -->
+    <script src="./env.js"></script>
+    <style>
+        body { font-family: system-ui, sans-serif; max-width: 720px; margin: 24px auto; padding: 0 16px; }
+        fieldset { margin-bottom: 16px; }
+        label { display: block; margin: 4px 0; }
+        input { width: 100%; box-sizing: border-box; }
+        #status { font-weight: bold; }
+        #log { background: #f4f4f4; padding: 8px; height: 220px; overflow: auto; font-family: monospace; font-size: 12px; }
+        button { margin: 2px; }
+    </style>
+    <script>
+        // ------------------------------------------------------------------
+        // 1. Subscribe BEFORE phone.Init(). The event bus has no memory: an
+        //    event fired before you subscribe is gone.
+        // ------------------------------------------------------------------
+        // Where the ring, ringback and DTMF tones live. Without it the SDK looks in ./media/.
+        const MEDIA_LOCATION = "https://cdn.siperb.com/media/";
+        let currentSessionId = null;
+
+        function log(text) {
+            const el = document.getElementById("log");
+            el.textContent += new Date().toLocaleTimeString() + "  " + text + "\n";
+            el.scrollTop = el.scrollHeight;
+        }
+
+        phone.On("SipProviderStatus", function (status) {
+            // "Initial" | "Registering" | "Registered" | "Unregistered" | "Failed"
+            document.getElementById("status").textContent = status;
+            log("Registration: " + status);
+        });
+
+        phone.On("OnIncomingCall", function (call) {
+            // { SessionId, BuddyId, CallerId, DID, Direction, WithVideo, Time, ... }
+            currentSessionId = call.SessionId;
+            log("Incoming call from " + call.CallerId + " (" + call.DID + ")");
+        });
+
+        phone.On("OnSessionChange", function (session) {
+            // The live session. Read what you need; do not keep it after the call ends.
+            log("Call " + session.Id + ": " + session.State + " / " + session.Status);
+        });
+
+        phone.On("OnCallEnded", function (ended) {
+            // { SessionId, ReasonCode, ReasonText, TerminatedBy, ... }
+            log("Call ended: " + ended.ReasonCode + " " + ended.ReasonText + " (by " + ended.TerminatedBy + ")");
+            if (ended.SessionId === currentSessionId) currentSessionId = null;
+        });
+
+        // ------------------------------------------------------------------
+        // 2. Start the phone. phone.Init() always tries to connect, and throws
+        //    if it cannot (missing server or credentials).
+        // ------------------------------------------------------------------
+
+        // Path A: your own SIP server (any WebRTC-capable server with a WSS endpoint).
+        async function startWithOwnServer() {
+            const value = (id) => document.getElementById(id).value.trim();
+            await phone.Init({
+                ProfileUserId: value("sipUser"),   // keeps this account's local data separate
+                wssServer: value("wssServer"),     // e.g. "sip.example.com"
+                WebSocketPort: Number(value("wssPort")) || 443,
+                ServerPath: value("wssPath") || "/ws",
+                SipUsername: value("sipUser"),
+                SipPassword: value("sipPass"),
+                SipDomain: value("sipDomain"),
+                DisplayName: value("displayName"),
+                Settings: { MediaLocation: MEDIA_LOCATION },
+            });
+        }
+
+        // Path B: Siperb provisioning. Your account supplies the server and credentials.
+        async function startWithSiperb() {
+            const accessToken = window.PERSONAL_ACCESS_TOKEN;
+            const deviceToken = window.DEVICE_TOKEN;
+            if (!accessToken || !deviceToken) throw new Error("Set PERSONAL_ACCESS_TOKEN and DEVICE_TOKEN in env.js");
+            if (!window.Siperb || typeof Siperb.Login !== "function") throw new Error("Build the loader first: npm run build");
+
+            const session = await Siperb.Login(accessToken);
+            const provisioning = await Siperb.GetProvisioning({
+                UserId: session.UserId,
+                DeviceToken: deviceToken,
+                SessionToken: session.SessionToken,
+            });
+
+            const options = {
+                ProfileUserId: deviceToken,
+                wssServer: provisioning.SipWssServer,
+                WebSocketPort: provisioning.SipWebsocketPort,
+                ServerPath: provisioning.SipServerPath,
+                SipUsername: provisioning.SipUsername,
+                SipPassword: provisioning.SipPassword,
+                SipDomain: provisioning.SipDomain,
+                ContactUserName: provisioning.SipContact,
+                DisplayName: provisioning.profileName,
+                Settings: { MediaLocation: MEDIA_LOCATION },
+            };
+            // Siperb's proxy identifies the account from these headers.
+            if (provisioning.RegistrationMode == "Proxy" || String(provisioning.SipWssServer || "").endsWith(".siperb.com")) {
+                const headers = { "X-Siperb-Sid": session.SessionToken, "X-Siperb-Uid": session.UserId };
+                if (provisioning.SipJwt) headers.Authorization = "Bearer " + provisioning.SipJwt;
+                options.ExtraRegisterHeaders = Object.assign({}, headers);
+                options.ExtraInviteHeaders = Object.assign({}, headers);
+            }
+            await phone.Init(options);
+        }
+
+        async function start(fn) {
+            try {
+                await fn();
+                log("phone.Init() done");
+            } catch (e) {
+                log("Could not start: " + (e && e.message ? e.message : e));
+            }
+        }
+
+        // ------------------------------------------------------------------
+        // 3. Call control. Every verb takes a session id (or a session).
+        // ------------------------------------------------------------------
+        async function dial() {
+            const number = document.getElementById("number").value.trim();
+            const sessionId = await phone.Dial(number);
+            if (sessionId) currentSessionId = sessionId;
+            log(sessionId ? "Dialling " + number : "Call was not placed");
+        }
+        function withCall(verb) {
+            return async function () {
+                if (!currentSessionId) return log("No call");
+                await verb(currentSessionId);
+            };
+        }
+
+        window.addEventListener("load", function () {
+            const on = (id, handler) => document.getElementById(id).addEventListener("click", handler);
+            on("startOwn", () => start(startWithOwnServer));
+            on("startSiperb", () => start(startWithSiperb));
+            on("dial", dial);
+            on("answer", withCall((id) => phone.Answer(id)));
+            on("decline", withCall((id) => phone.Decline(id)));
+            on("hangup", withCall((id) => phone.EndCall(id)));
+            on("hold", withCall((id) => phone.Hold(id)));
+            on("unhold", withCall((id) => phone.Unhold(id)));
+            on("mute", withCall((id) => phone.Mute(id)));
+            on("unmute", withCall((id) => phone.Unmute(id)));
+            on("dtmf1", withCall((id) => phone.SendDtmf(id, "1")));
+        });
+    </script>
+</head>
+
+<body>
+    <h1>Headless SDK Test</h1>
+    <p>Status: <span id="status">not started</span></p>
+
+    <fieldset>
+        <legend>Path A: your own SIP server</legend>
+        <label>WSS server <input id="wssServer" placeholder="sip.example.com"></label>
+        <label>Port <input id="wssPort" value="443"></label>
+        <label>Path <input id="wssPath" value="/ws"></label>
+        <label>SIP domain <input id="sipDomain" placeholder="example.com"></label>
+        <label>Username <input id="sipUser"></label>
+        <label>Password <input id="sipPass" type="password"></label>
+        <label>Display name <input id="displayName"></label>
+        <button id="startOwn">Start</button>
+    </fieldset>
+
+    <fieldset>
+        <legend>Path B: Siperb provisioning</legend>
+        <p>Reads <code>PERSONAL_ACCESS_TOKEN</code> and <code>DEVICE_TOKEN</code> from <code>env.js</code>.</p>
+        <button id="startSiperb">Start</button>
+    </fieldset>
+
+    <fieldset>
+        <legend>Calls</legend>
+        <label>Number <input id="number" value="*65"></label>
+        <button id="dial">Dial</button>
+        <button id="answer">Answer</button>
+        <button id="decline">Decline</button>
+        <button id="hangup">Hang up</button>
+        <button id="hold">Hold</button>
+        <button id="unhold">Unhold</button>
+        <button id="mute">Mute</button>
+        <button id="unmute">Unmute</button>
+        <button id="dtmf1">DTMF 1</button>
+    </fieldset>
+
+    <div id="log"></div>
+</body>
+
+</html>
